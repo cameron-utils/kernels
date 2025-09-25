@@ -1,0 +1,28 @@
+[build-system]
+requires = ["scikit-build-core", "nanobind"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "kernels"
+version = "0.0.1"
+description = ""
+authors = [{ name = "Cameron Barker", email = "cameronbarkeran@gmail.com" }]
+readme = "readme.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering",
+]
+
+dependencies = ["numpy", "torch"]
+
+[project.optional-dependencies]
+dev = []
+
+[tool.scikit-build]
+build.verbose = true
+wheel.packages = ["src/python/kernels"] 
+cmake.source-dir = "src/cpp"
