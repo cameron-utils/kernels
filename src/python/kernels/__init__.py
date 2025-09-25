@@ -1,4 +1,1 @@
-from ._cpp_kernels import matmul
-
-
-__all__ = ["matmul"]
+__version__ = "0.0.1"

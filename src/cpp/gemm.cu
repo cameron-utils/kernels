@@ -1,7 +1,7 @@
-#include "kernels.h"
+#include "gemm.h"
 
-__global__ void matmul_kernel(const float* A, const float* B, float* C,
-                              int M, int N, int K) {
+__global__ void gemm1_fp32_fp32_kernel(const float* A, const float* B, float* C,
+    int M, int N, int K) {
     int row = blockIdx.y * blockDim.y + threadIdx.y;
     int col = blockIdx.x * blockDim.x + threadIdx.x;
 
@@ -15,12 +15,12 @@ __global__ void matmul_kernel(const float* A, const float* B, float* C,
 }
 
 extern "C"
-void launch_matmul(const float* A, const float* B, float* C,
-                   int M, int N, int K) {
+void gemm1_fp32_fp32(const float* A, const float* B, float* C,
+    int M, int N, int K) {
     dim3 threads(16, 16);
     dim3 blocks((N + 15) / 16, (M + 15) / 16);
 
-    matmul_kernel<<<blocks, threads>>>(A, B, C, M, N, K);
+    gemm1_fp32_fp32_kernel << <blocks, threads >> > (A, B, C, M, N, K);
 
-    cudaDeviceSynchronize(); // add for safety in benchmarking
+    cudaDeviceSynchronize();
 }

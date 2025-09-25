@@ -4,7 +4,6 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "kernels"
-version = "0.0.1"
 description = ""
 authors = [{ name = "Cameron Barker", email = "cameronbarkeran@gmail.com" }]
 readme = "readme.md"
@@ -16,13 +15,29 @@ classifiers = [
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering",
 ]
+dynamic = ["version"]
 
-dependencies = ["numpy", "torch"]
+dependencies = [
+    "numpy",
+    "torch",
+    "tilelang",
+    "jax[cuda13]",
+    "tilus",
+    "helion",
+    "triton",
+    "draccus",
+    "pandas",
+    "matplotlib",
+]
 
 [project.optional-dependencies]
 dev = []
 
 [tool.scikit-build]
 build.verbose = true
-wheel.packages = ["src/python/kernels"] 
+wheel.packages = ["src/python/kernels"]
 cmake.source-dir = "src/cpp"
+
+[tool.scikit-build.metadata.version]
+provider = "scikit_build_core.metadata.regex"
+input = "src/python/kernels/__init__.py"

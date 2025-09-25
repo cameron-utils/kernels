@@ -19,14 +19,13 @@ include(${NANOBIND_CMAKE_DIR}/nanobind-config.cmake)
 # --- THIS IS THE CRITICAL PART ---
 # Create the "_cpp_kernels" target from your source files.
 # This was missing from your file.
-nanobind_add_module(_cpp_kernels
+nanobind_add_module(_cuda_gemm
     STABLE_ABI
-    kernels.cu
-    bindings.cpp
+    gemm.cu
+    gemm.cpp
 )
 
 # Enable CUDA separable compilation for the target you just created
-set_target_properties(_cpp_kernels PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
-
+set_target_properties(_cuda_gemm PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
 # Install the final compiled library into the "kernels" python package
-install(TARGETS _cpp_kernels LIBRARY DESTINATION kernels)
+install(TARGETS _cuda_gemm LIBRARY DESTINATION kernels/gemm)
