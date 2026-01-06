@@ -197,6 +197,8 @@ Devices: NVIDIA GPU,
 [Homepage](https://docs.nvidia.com/cuda/cutile-python),
 [Repo](https://github.com/NVIDIA/cutile-python)
 
+Requries CUDA 13.1 and a GPU with one of the following compute capabilities {100, 103, 110, 120, 121} (Blackwell, Spark and Jetson Thor).
+
 ## Mirage Persistent Kernel (MPK)
 
 Type: Python embedded kernel DSL,
@@ -228,6 +230,9 @@ Devices: NVIDIA GPU,
 Type: Intermediate representation,
 Devices: NVIDIA GPU,
 [Homepage](https://docs.nvidia.com/cuda/tile-ir/latest/index.html)
+
+Can be loaded into `tileiras` assembler that ships with CUDA 13.1.
+Requries CUDA 13.1 and a GPU with one of the following compute capabilities {100, 103, 110, 120, 121} (Blackwell, Spark and Jetson Thor).
 
 ## Thrust
 
