@@ -363,7 +363,6 @@ class TilusGemm(TorchGemm):
 class HelionGemm(TorchGemm):
     variants = {
         "default": [
-
             {
                 "comp_dtype": "float16",
                 "acc_dtype": "float16",
@@ -372,7 +371,6 @@ class HelionGemm(TorchGemm):
                 "comp_dtype": "float16",
                 "acc_dtype": "float32",
             },
-
             {
                 "comp_dtype": "bfloat16",
                 "acc_dtype": "float32",
@@ -431,9 +429,9 @@ class BenchmarkConfig:
 
 @dataclass
 class Config:
-    M: list[int] | str = field(default_factory=lambda: [128])
-    N: list[int] | str = field(default_factory=lambda: [128])
-    K: list[int] | str = field(default_factory=lambda: [128])
+    M: list[int] | int = field(default_factory=lambda: [128])
+    N: list[int] | int | None = None
+    K: list[int] | int | None = None
     comp_dtype: list[str] | str = field(
         default_factory=lambda: ["float16", "bfloat16", "float32"]
     )  # Type used for computation
@@ -454,6 +452,17 @@ class Config:
     bench: BenchmarkConfig = field(default_factory=BenchmarkConfig)
 
     def __post_init__(self):
+        if isinstance(self.M, int):
+            self.M = [self.M]
+        if self.N is None:
+            self.N = self.M
+        elif isinstance(self.N, int):
+            self.N = [self.N]
+        if self.K is None:
+            self.K = self.M
+        elif isinstance(self.K, int):
+            self.K = [self.K]
+
         if self.targets == "all":
             self.targets = list(TARGETS.keys())
         targets = []
@@ -613,6 +622,8 @@ def main(cfg: Config):
                                 acc_dtype=acc_dtype,
                                 variant=variant,
                             )
+                            if isinstance(test_results, Exception):
+                                raise test_results
                             cs = test_results["c"]
                             c_refs = ref_data["c"]
                             allclose = np.allclose(
